@@ -3,5 +3,6 @@
   "redis_addr": "localhost:6379",
   "redis_password": "",
   "metrics_port": ":8083",
-  "api_port": ":8084"
+  "api_port": ":8084",
+  "api_key": "my-super-secret-key-123"
 }

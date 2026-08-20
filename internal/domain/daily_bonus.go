@@ -1,4 +1,4 @@
-package main
+package domain
 
 import (
 	"time"
@@ -27,11 +27,6 @@ func GetDailyReward(day int) DailyBonusReward {
 }
 
 // EvaluateDailyStreak determines next streak day and whether bonus can be claimed
-// Logic:
-// - Never claimed before -> Day 1, CanClaim = true
-// - Claimed < 20 hours ago -> CanClaim = false
-// - Claimed between 20h and 48h ago -> Next Streak Day = min(7, currentStreak + 1), CanClaim = true
-// - Claimed > 48 hours ago -> Streak resets to Day 1, CanClaim = true
 func EvaluateDailyStreak(lastClaim *time.Time, currentStreak int, now time.Time) (nextStreakDay int, canClaim bool) {
 	if lastClaim == nil || lastClaim.IsZero() {
 		return 1, true

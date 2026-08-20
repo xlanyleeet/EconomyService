@@ -1,4 +1,4 @@
-package main
+package domain
 
 import (
 	"time"
@@ -38,13 +38,13 @@ type DailyBonusReward struct {
 
 // DailyBonusClaimResult describes the result of claiming a daily bonus
 type DailyBonusClaimResult struct {
-	PlayerUUID      string           `json:"player_uuid"`
-	StreakDay       int              `json:"streak_day"`
-	CoinsAwarded    int64            `json:"coins_awarded"`
-	TokensAwarded   int              `json:"tokens_awarded"`
-	NewTotalCoins   int64            `json:"new_total_coins"`
-	NewTotalTokens  int              `json:"new_total_tokens"`
-	NextClaimAvailableAt time.Time   `json:"next_claim_available_at"`
+	PlayerUUID           string    `json:"player_uuid"`
+	StreakDay            int       `json:"streak_day"`
+	CoinsAwarded         int64     `json:"coins_awarded"`
+	TokensAwarded        int       `json:"tokens_awarded"`
+	NewTotalCoins        int64     `json:"new_total_coins"`
+	NewTotalTokens       int       `json:"new_total_tokens"`
+	NextClaimAvailableAt time.Time `json:"next_claim_available_at"`
 }
 
 // MatchResult represents the incoming JSON event from Redis Stream "minigames:events:match_results"
@@ -72,12 +72,12 @@ type EarnedEconomyData struct {
 
 // LevelUpEvent represents event from Redis Stream/PubSub "leveling:events:levelup"
 type LevelUpEvent struct {
-	PlayerUUID      string       `json:"player_uuid"`
-	OldLevel        int          `json:"old_level"`
-	NewLevel        int          `json:"new_level"`
-	Prestige        int          `json:"prestige"`
+	PlayerUUID      string        `json:"player_uuid"`
+	OldLevel        int           `json:"old_level"`
+	NewLevel        int           `json:"new_level"`
+	Prestige        int           `json:"prestige"`
 	UnlockedRewards []LevelReward `json:"unlocked_rewards"`
-	Timestamp       int64        `json:"timestamp"`
+	Timestamp       int64         `json:"timestamp"`
 }
 
 // LevelReward defines unlocked rewards from LevelingService
