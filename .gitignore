@@ -1,0 +1,15 @@
+# Compiled binaries
+economy-service-linux-amd64
+economy-service.exe
+economy-service
+
+# Executables
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries
+*.test
+*.out
