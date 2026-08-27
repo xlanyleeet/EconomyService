@@ -13,3 +13,7 @@ economy-service
 # Test binaries
 *.test
 *.out
+
+# Build directories
+dist/
+bin/
