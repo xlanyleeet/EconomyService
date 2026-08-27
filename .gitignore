@@ -1,7 +1,7 @@
-# Compiled binaries
-economy-service-linux-amd64
-economy-service.exe
-economy-service
+# Compiled binaries in root
+/economy-service-linux-amd64
+/economy-service.exe
+/economy-service
 
 # Executables
 *.exe
