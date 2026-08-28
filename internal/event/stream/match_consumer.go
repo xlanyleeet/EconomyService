@@ -199,12 +199,20 @@ func (c *MatchConsumer) processMatchResult(ctx context.Context, result domain.Ma
 		}
 
 		earnedCoins := p.EarnedEconomy.Coins
-		if earnedCoins <= 0 {
+		if earnedCoins < 0 {
+			earnedCoins = 0
+		}
+		if earnedCoins == 0 {
 			earnedCoins = 20
 		}
 
 		if p.Status == "WINNER" {
 			earnedCoins = int64(float64(earnedCoins) * 1.5)
+		}
+
+		// Boundary sanity check: ensure rewards cannot exceed maximum allowable limit per match
+		if earnedCoins > 1000000 {
+			earnedCoins = 1000000
 		}
 
 		idempKey := fmt.Sprintf("match-%s-%s", result.MatchID, p.UUID)

@@ -23,34 +23,43 @@ func (s *Subscriber) startLevelUpListener(ctx context.Context) {
 		}
 
 		pubsub := s.redisClient.RawClient().Subscribe(ctx, "leveling:events:levelup")
-		go func() {
-			<-ctx.Done()
-			_ = pubsub.Close()
-		}()
+		ch := pubsub.Channel()
 
-		for {
-			msg, err := pubsub.ReceiveMessage(ctx)
-			if err != nil {
-				pubsub.Close()
-				if ctx.Err() != nil {
-					return
+		done := false
+		for !done {
+			select {
+			case <-ctx.Done():
+				_ = pubsub.Close()
+				return
+			case msg, ok := <-ch:
+				if !ok {
+					_ = pubsub.Close()
+					if ctx.Err() != nil {
+						return
+					}
+					log.Printf("[PubSub LevelUp] Connection lost, reconnecting in 3s...")
+					done = true
+					break
 				}
-				log.Printf("[PubSub LevelUp] Connection lost (%v), reconnecting in 3s...", err)
-				select {
-				case <-ctx.Done():
-					return
-				case <-time.After(3 * time.Second):
+
+				if msg == nil || msg.Payload == "" {
+					continue
 				}
-				break
-			}
 
-			var event domain.LevelUpEvent
-			if err := json.Unmarshal([]byte(msg.Payload), &event); err != nil {
-				log.Printf("[PubSub LevelUp] Parse error: %v", err)
-				continue
-			}
+				var event domain.LevelUpEvent
+				if err := json.Unmarshal([]byte(msg.Payload), &event); err != nil {
+					log.Printf("[PubSub LevelUp] Parse error: %v", err)
+					continue
+				}
 
-			s.processLevelUpRewards(ctx, event)
+				s.processLevelUpRewards(ctx, event)
+			}
+		}
+
+		select {
+		case <-ctx.Done():
+			return
+		case <-time.After(3 * time.Second):
 		}
 	}
 }
