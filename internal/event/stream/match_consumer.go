@@ -206,10 +206,6 @@ func (c *MatchConsumer) processMatchResult(ctx context.Context, result domain.Ma
 			earnedCoins = 20
 		}
 
-		if p.Status == "WINNER" {
-			earnedCoins = int64(float64(earnedCoins) * 1.5)
-		}
-
 		// Boundary sanity check: ensure rewards cannot exceed maximum allowable limit per match
 		if earnedCoins > 1000000 {
 			earnedCoins = 1000000
